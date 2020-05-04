@@ -62,6 +62,25 @@ resource "kubernetes_config_map" "policy_default" {
   }
 }
 
+resource "kubernetes_config_map" "valid_host" {
+  count = var.enable_invalid_hostname_policy ? 1 : 0
+  metadata {
+    name      = "valid-host"
+    namespace = helm_release.open_policy_agent.namespace
+    labels = {
+      "openpolicyagent.org/policy"    = "rego"
+    }
+  }
+  data = {
+    main = templatefile("${path.module}/resources/policies-test-cluster/valid_hostname.rego", {
+    cluster_domain_name                 = "*.${var.cluster_domain_name}"
+    })
+  }
+  lifecycle {
+    ignore_changes = [metadata.0.annotations]
+  }
+}
+
 resource "kubernetes_config_map" "policy_cloud_platform_admission" {
   metadata {
     name      = "policy-cloud-platform-admission"
