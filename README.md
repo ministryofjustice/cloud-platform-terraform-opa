@@ -7,8 +7,6 @@ Terraform module that deploys cloud-platform's open policy agent. It includes al
 ```hcl
 module "opa" {
   source = "github.com/ministryofjustice/cloud-platform-terraform-opa?ref=0.0.1"
-
-  dependence_deploy = null_resource.deploy
 }
 ```
 
@@ -16,7 +14,6 @@ module "opa" {
 
 | Name                         | Description                                        | Type | Default | Required |
 |------------------------------|----------------------------------------------------|:----:|:-------:|:--------:|
-| dependence_deploy            | Deploy (helm) dependence variable                  | string   |       | yes |
 
 ## Outputs
 
