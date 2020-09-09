@@ -181,3 +181,23 @@ resource "kubernetes_config_map" "policy_pod_toleration_withnullkey" {
   }
 }
 
+resource "kubernetes_config_map" "ingress_class" {
+  metadata {
+    name      = "ingress-class"
+    namespace = helm_release.open_policy_agent.namespace
+
+    labels = {
+      "openpolicyagent.org/policy" = "rego"
+    }
+  }
+
+  data = {
+    main = file(
+      "${path.module}/resources/policies/ingress_nginx_class.rego",
+    )
+  }
+
+  lifecycle {
+    ignore_changes = [metadata.0.annotations]
+  }
+}
