@@ -13,6 +13,7 @@ resource "kubernetes_namespace" "opa" {
       "cloud-platform.justice.gov.uk/business-unit" = "cloud-platform"
       "cloud-platform.justice.gov.uk/owner"         = "Cloud Platform: platforms@digital.justice.gov.uk"
       "cloud-platform.justice.gov.uk/source-code"   = "https://github.com/ministryofjustice/cloud-platform-infrastructure"
+      "cloud-platform.justice.gov.uk/slack-channel" = "cloud-platform"
     }
   }
 }
@@ -67,12 +68,12 @@ resource "kubernetes_config_map" "valid_host" {
     name      = "valid-host"
     namespace = helm_release.open_policy_agent.namespace
     labels = {
-      "openpolicyagent.org/policy"    = "rego"
+      "openpolicyagent.org/policy" = "rego"
     }
   }
   data = {
     main = templatefile("${path.module}/resources/policies-test-cluster/valid_hostname.rego", {
-    cluster_domain_name                 = "*.${var.cluster_domain_name}"
+      cluster_domain_name = "*.${var.cluster_domain_name}"
     })
   }
   lifecycle {
