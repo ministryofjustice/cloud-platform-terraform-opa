@@ -182,3 +182,42 @@ resource "kubernetes_config_map" "policy_pod_toleration_withnullkey" {
   }
 }
 
+##################
+# Resource Quota #
+##################
+
+resource "kubernetes_resource_quota" "namespace_quota" {
+  metadata {
+    name      = "namespace-quota"
+    namespace = kubernetes_namespace.opa.id
+  }
+  spec {
+    hard = {
+      pods = 50
+    }
+  }
+}
+
+##############
+# LimitRange #
+##############
+
+resource "kubernetes_limit_range" "opa" {
+  metadata {
+    name      = "limitrange"
+    namespace = kubernetes_namespace.opa.id
+  }
+  spec {
+    limit {
+      type = "Container"
+      default = {
+        cpu    = "80m"
+        memory = "400Mi"
+      }
+      default_request = {
+        cpu    = "4m"
+        memory = "50Mi"
+      }
+    }
+  }
+}
