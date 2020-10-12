@@ -4,8 +4,10 @@ resource "kubernetes_namespace" "opa" {
     name = "opa"
 
     labels = {
-      "name"                        = "opa"
-      "openpolicyagent.org/webhook" = "ignore"
+      "name"                                           = "opa"
+      "openpolicyagent.org/webhook"                    = "ignore"
+      "cloud-platform.justice.gov.uk/is-production"    = "true"
+      "cloud-platform.justice.gov.uk/environment-name" = "production"
     }
 
     annotations = {
