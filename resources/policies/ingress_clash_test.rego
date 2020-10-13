@@ -2,7 +2,7 @@ package cloud_platform.admission
 
 # generates a redacted Ingress spec
 new_ingress(namespace, name, host) = {
-  "apiVersion": "extensions/v1beta1",
+  "apiVersion": "networking.k8s.io/v1beta1",
   "kind": "Ingress",
   "metadata": {
     "name": name,
