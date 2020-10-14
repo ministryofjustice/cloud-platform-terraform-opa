@@ -45,9 +45,23 @@ resource "null_resource" "kube_system_ns_label" {
   }
 }
 
-resource "kubernetes_config_map" "policy_default" {
+resource "kubernetes_config_map" "policies_opa" {
+
+  for_each = {
+    policy-default                               = "main",
+    policy-cloud-platform-admission              = "cloud_platform_admission",
+    policy-ingress-clash                         = "ingress_clash",
+    policy-service-type                          = "service_type",
+    policy-pod-toleration-withkey                = "pod_toleration_withkey",
+    policy-pod-toleration-withnullkey            = "pod_toleration_withnullkey",
+    policy-ingress-nginx-class-modsec            = "ingress_modsec_nginx_class",
+    policy-ingress-no-nginx-class-modsec         = "ingress_modsec_no_nginx_class",
+    policy-ingress-nginx-class-modsec-snippet    = "ingress_modsec_snippet_nginx_class",
+    policy-ingress-no-nginx-class-modsec-snippet = "ingress_modsec_snippet_no_nginx_class",
+  }
+
   metadata {
-    name      = "policy-default"
+    name      = each.key
     namespace = helm_release.open_policy_agent.namespace
 
     labels = {
@@ -56,7 +70,7 @@ resource "kubernetes_config_map" "policy_default" {
   }
 
   data = {
-    main = file("${path.module}/resources/policies/main.rego")
+    main = file("${path.module}/resources/policies/${each.value}.rego")
   }
 
   lifecycle {
@@ -78,107 +92,6 @@ resource "kubernetes_config_map" "valid_host" {
       cluster_domain_name = "*.${var.cluster_domain_name}"
     })
   }
-  lifecycle {
-    ignore_changes = [metadata.0.annotations]
-  }
-}
-
-resource "kubernetes_config_map" "policy_cloud_platform_admission" {
-  metadata {
-    name      = "policy-cloud-platform-admission"
-    namespace = helm_release.open_policy_agent.namespace
-
-    labels = {
-      "openpolicyagent.org/policy" = "rego"
-    }
-  }
-
-  data = {
-    main = file(
-      "${path.module}/resources/policies/cloud_platform_admission.rego",
-    )
-  }
-
-  lifecycle {
-    ignore_changes = [metadata.0.annotations]
-  }
-}
-
-resource "kubernetes_config_map" "policy_ingress_clash" {
-  metadata {
-    name      = "policy-ingress-clash"
-    namespace = helm_release.open_policy_agent.namespace
-
-    labels = {
-      "openpolicyagent.org/policy" = "rego"
-    }
-  }
-
-  data = {
-    main = file("${path.module}/resources/policies/ingress_clash.rego")
-  }
-
-  lifecycle {
-    ignore_changes = [metadata.0.annotations]
-  }
-}
-
-resource "kubernetes_config_map" "policy_service_type" {
-  metadata {
-    name      = "policy-service-type"
-    namespace = helm_release.open_policy_agent.namespace
-
-    labels = {
-      "openpolicyagent.org/policy" = "rego"
-    }
-  }
-
-  data = {
-    main = file("${path.module}/resources/policies/service_type.rego")
-  }
-
-  lifecycle {
-    ignore_changes = [metadata.0.annotations]
-  }
-}
-
-resource "kubernetes_config_map" "policy_pod_toleration_withkey" {
-  metadata {
-    name      = "policy-pod-toleration-withkey"
-    namespace = helm_release.open_policy_agent.namespace
-
-    labels = {
-      "openpolicyagent.org/policy" = "rego"
-    }
-  }
-
-  data = {
-    main = file(
-      "${path.module}/resources/policies/pod_toleration_withkey.rego",
-    )
-  }
-
-  lifecycle {
-    ignore_changes = [metadata.0.annotations]
-  }
-}
-
-resource "kubernetes_config_map" "policy_pod_toleration_withnullkey" {
-  metadata {
-    name      = "policy-pod-toleration-withnullkey"
-    namespace = helm_release.open_policy_agent.namespace
-
-    labels = {
-      "openpolicyagent.org/policy" = "rego"
-    }
-  }
-
-  data = {
-    main = file(
-      "${path.module}/resources/policies/pod_toleration_withnullkey.rego",
-    )
-  }
-
   lifecycle {
     ignore_changes = [metadata.0.annotations]
   }

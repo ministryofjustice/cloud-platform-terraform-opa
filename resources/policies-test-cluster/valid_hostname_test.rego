@@ -21,7 +21,7 @@ new_admission_review(op, newObject, oldObject) = {
 
 # generates a redacted Ingress spec
 new_ingress(host) = {
-  "apiVersion": "extensions/v1beta1",
+  "apiVersion": "networking.k8s.io/v1beta1",
   "kind": "Ingress",
   "spec": {
     "rules": [{ "host": host }]
@@ -38,4 +38,3 @@ test_valid_host_create_allowed {
   not denied
     with input as new_admission_review("CREATE", new_ingress("${cluster_domain_name}"), null)
 }
-valid_hostname_test.rego

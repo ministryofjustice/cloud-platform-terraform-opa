@@ -15,7 +15,7 @@ admissionControllerFailurePolicy: Fail
 # operations are subject to OPA policy checks.
 admissionControllerRules:
   - operations: ["CREATE", "UPDATE"]
-    apiGroups: ["extensions"]
+    apiGroups: ["extensions", "networking.k8s.io"]
     apiVersions: ["*"]
     resources: ["ingresses"]
   - operations: ["CREATE", "UPDATE"]
