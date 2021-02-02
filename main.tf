@@ -1,9 +1,4 @@
 
-data "helm_repository" "stable" {
-  name = "stable"
-  url  = "https://charts.helm.sh/stable"
-}
-
 resource "kubernetes_namespace" "opa" {
   metadata {
     name = "opa"
@@ -29,7 +24,7 @@ resource "kubernetes_namespace" "opa" {
 resource "helm_release" "open_policy_agent" {
   name       = "opa"
   namespace  = kubernetes_namespace.opa.id
-  repository = data.helm_repository.stable.metadata[0].name
+  repository = "https://charts.helm.sh/stable"
   chart      = "opa"
   version    = "1.13.4"
 
