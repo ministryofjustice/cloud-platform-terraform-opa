@@ -7,7 +7,7 @@ resource "kubernetes_namespace" "opa" {
       "name"                                           = "opa"
       "openpolicyagent.org/webhook"                    = "ignore"
       "cloud-platform.justice.gov.uk/is-production"    = "true"
-      "cloud-platform.justice.gov.uk/environment-name" = "production"
+      "cloud-platform.justice.gov.uk/environment-name" = "testing github action"
     }
 
     annotations = {
