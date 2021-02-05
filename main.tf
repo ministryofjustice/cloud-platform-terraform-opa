@@ -1,4 +1,5 @@
 
+
 resource "kubernetes_namespace" "opa" {
   metadata {
     name = "opa"
