@@ -21,12 +21,13 @@ resource "kubernetes_namespace" "opa" {
   }
 }
 
-resource "helm_release" "open_policy_agent" {
+
+resource "helm_release" "opa" {
   name       = "opa"
   namespace  = kubernetes_namespace.opa.id
   repository = "https://charts.helm.sh/stable"
   chart      = "opa"
-  version    = "1.13.4"
+  version    = "1.14.4"
 
   depends_on = [
     null_resource.kube_system_ns_label,
@@ -59,11 +60,13 @@ resource "kubernetes_config_map" "policies_opa" {
     policy-ingress-no-nginx-class-modsec         = "ingress_modsec_no_nginx_class",
     policy-ingress-nginx-class-modsec-snippet    = "ingress_modsec_snippet_nginx_class",
     policy-ingress-no-nginx-class-modsec-snippet = "ingress_modsec_snippet_no_nginx_class",
+    policy-mutate-helpers                        = "mutate_helpers",
+    policy-mutate-ingress                        = "mutate_ingress"
   }
 
   metadata {
     name      = each.key
-    namespace = helm_release.open_policy_agent.namespace
+    namespace = helm_release.opa.namespace
 
     labels = {
       "openpolicyagent.org/policy" = "rego"
@@ -83,7 +86,7 @@ resource "kubernetes_config_map" "valid_host" {
   count = var.enable_invalid_hostname_policy ? 1 : 0
   metadata {
     name      = "valid-host"
-    namespace = helm_release.open_policy_agent.namespace
+    namespace = helm_release.opa.namespace
     labels = {
       "openpolicyagent.org/policy" = "rego"
     }
@@ -102,7 +105,7 @@ resource "kubernetes_config_map" "valid_host" {
 # Resource Quota #
 ##################
 
-resource "kubernetes_resource_quota" "namespace_quota" {
+resource "kubernetes_resource_quota" "opa" {
   metadata {
     name      = "namespace-quota"
     namespace = kubernetes_namespace.opa.id

@@ -6,6 +6,9 @@
 # needs to include the opa config yaml, eg:
 opa:
 
+# To only validate policies, change to ValidatingWebhookConfiguration
+admissionControllerKind: MutatingWebhookConfiguration
+
 # To _fail closed_ on failures, change to Fail. During initial testing, we
 # recommend leaving the failure policy as Ignore.
 admissionControllerFailurePolicy: Fail
@@ -37,6 +40,9 @@ mgmt:
     namespace:
       - "extensions/v1beta1/ingresses"
     path: kubernetes
+
+logLevel: info
+logFormat: json
 
 # Number of OPA replicas to deploy. OPA maintains an eventually consistent
 # cache of policies and data. If you want high availability you can deploy two
