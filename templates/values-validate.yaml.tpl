@@ -6,8 +6,7 @@
 # needs to include the opa config yaml, eg:
 opa:
 
-# To only validate policies, change to ValidatingWebhookConfiguration
-admissionControllerKind: MutatingWebhookConfiguration
+admissionControllerKind: ValidatingWebhookConfiguration
 
 # To _fail closed_ on failures, change to Fail. During initial testing, we
 # recommend leaving the failure policy as Ignore.
@@ -33,7 +32,7 @@ admissionControllerRules:
 mgmt:
   configmapPolicies:
     enabled: true
-    namespaces: [opa]
+    namespaces: [opa-validate]
   replicate:
     cluster:
       - "v1/namespaces"

@@ -1,4 +1,4 @@
-package cloud_platform.admission
+package library.kubernetes.admission.mutating
 
 import data.kubernetes.ingresses
 

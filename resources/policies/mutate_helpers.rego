@@ -1,6 +1,4 @@
-package cloud_platform.admission
-
-import data.kubernetes.ingresses
+package library.kubernetes.admission.mutating
 
 ###########################################################################
 # PATCH helpers

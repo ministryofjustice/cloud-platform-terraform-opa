@@ -1,4 +1,4 @@
-package cloud_platform.admission
+package library.kubernetes.admission.mutating
 
 main = {
   "apiVersion": "admission.k8s.io/v1beta1",
