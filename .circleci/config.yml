@@ -3,7 +3,7 @@ version: 2
 jobs:
   test_opa:
     machine:
-      image: ubuntu-2004
+      image: ubuntu:20.04
     steps:
       - checkout
       - run:
