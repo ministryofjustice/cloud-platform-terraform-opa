@@ -3,12 +3,12 @@ version: 2
 jobs:
   test_opa:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004
     steps:
       - checkout
       - run:
           name: run opa tests
-          command: docker run -v $(pwd)/resources/policies:/tmp/foobar openpolicyagent/opa test /tmp/foobar
+          command: docker run -v $(pwd)/resources/policies:/tmp/foobar openpolicyagent/opa:0.15.1 test /tmp/foobar
 
 workflows:
   version: 2
