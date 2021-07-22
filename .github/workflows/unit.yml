@@ -6,10 +6,6 @@ jobs:
   go-tests:
     name: Run Terratest Unit Tests
     runs-on: ubuntu-latest
-    # This is not needed now but it will for integration tests
-    # env:
-    #   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -17,24 +13,27 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v1
         with:
-          go-version: 1.13
+          go-version: 1.16
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.13.x
+          terraform_version: 0.14.x
           terraform_wrapper: false
 
       - name: Download Go Modules
         working-directory: test
         run: go mod download
 
-      - uses: engineerd/setup-kind@v0.5.0
-      - name: Set up Kind for module testing
+      - name: Set up Kind
+        uses: engineerd/setup-kind@v0.5.0
+        with:
+          image: "kindest/node:v1.20.2@sha256:15d3b5c4f521a84896ed1ead1b14e4774d02202d5c65ab68f30eeaf310a3b1a7"
+
+      - name: Quick test
         run: |
           kubectl cluster-info
           kubectl get pods -n kube-system
-          echo "current-context:" $(kubectl config current-context)
 
       - name: Run Go Tests
         working-directory: test

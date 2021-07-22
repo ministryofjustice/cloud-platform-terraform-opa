@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 0.12"
+  required_version = ">= 0.14"
 }
 
 provider "aws" {
@@ -11,4 +11,3 @@ module "opa" {
 
   cluster_domain_name = "opa.cloud-platform.service.justice.gov.uk"
 }
-
