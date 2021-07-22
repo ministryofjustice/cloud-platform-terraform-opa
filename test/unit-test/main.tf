@@ -18,12 +18,19 @@ provider "aws" {
   }
 }
 
+resource "kubernetes_namespace" "monitoring" {
+  metadata {
+    name = "monitoring"
+  }
+}
+
 resource "helm_release" "prometheus_operator" {
   name       = "prometheus-operator"
   repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "kube-prometheus-stack"
   namespace  = "monitoring"
   version    = "12.11.3"
+  depends_on = [kubernetes_namespace.monitoring]
 }
 
 module "cert_manager" {
