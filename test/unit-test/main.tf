@@ -24,10 +24,21 @@ resource "kubernetes_namespace" "monitoring" {
   }
 }
 
-module "prometheus" {
-  source             = "mateothegreat/monitoring-prometheus-operator/kubernetes"
-  version            = "0.0.8"
-  operator_namespace = "monitoring"
+resource "helm_release" "kube_state_metrics" {
+  name       = "kube-state-metrics"
+  repository = "https://kubernetes.github.io/kube-state-metrics"
+  chart      = "kube-state-metrics"
+  version    = "2.13.3"
+  namespace  = "monitoring"
+}
+
+resource "helm_release" "prometheus" {
+  name       = "prometheus"
+  repository = "https://prometheus-community.github.io/helm-charts"
+  chart      = "prometheus"
+  version    = "14.4.1"
+  namespace  = "monitoring"
+  depends_on = [helm_release.kube_state_metrics]
 }
 
 module "cert_manager" {
@@ -38,11 +49,11 @@ module "cert_manager" {
   dependence_opa        = "ignore"
   iam_role_nodes        = "arn:aws:iam::000000000000:role/dummy"
   hostzone              = ["arn:aws:route53:::hostedzone/*"]
-  depends_on            = [module.prometheus]
+  depends_on            = [helm_release.prometheus]
 }
 
 module "opa" {
   source              = "../.."
-  depends_on          = [helm_release.prometheus, module.cert_manager]
+  depends_on          = [module.cert_manager]
   cluster_domain_name = "opa.cloud-platform.service.justice.gov.uk"
 }
