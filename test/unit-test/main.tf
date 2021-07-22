@@ -19,7 +19,7 @@ provider "aws" {
 }
 
 module "prometheus" {
-  source = "https://github.com/ministryofjustice/cloud-platform-terraform-monitoring?ref=1.7.2"
+  source = "github.com/ministryofjustice/cloud-platform-terraform-monitoring?ref=1.7.2"
 
   alertmanager_slack_receivers = [
     {
