@@ -39,7 +39,7 @@ jobs:
         uses: engineerd/setup-kind@v0.5.0
         with:
           image: "kindest/node:v1.20.2@sha256:15d3b5c4f521a84896ed1ead1b14e4774d02202d5c65ab68f30eeaf310a3b1a7"
-          wait: "120s"
+          wait: "180s"
 
       - name: Quick test
         run: |

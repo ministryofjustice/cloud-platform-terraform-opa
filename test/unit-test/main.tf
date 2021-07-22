@@ -24,12 +24,12 @@ resource "kubernetes_namespace" "monitoring" {
   }
 }
 
-resource "helm_release" "prometheus_operator" {
-  name       = "prometheus-operator"
-  repository = "https://prometheus-community.github.io/helm-charts"
-  chart      = "kube-prometheus-stack"
+resource "helm_release" "prometheus" {
+  name       = "prometheus"
+  repository = "https://charts.bitnami.com/bitnami"
+  chart      = "kube-prometheus"
   namespace  = "monitoring"
-  version    = "12.11.3"
+  version    = "6.1.2"
   depends_on = [kubernetes_namespace.monitoring]
 }
 
