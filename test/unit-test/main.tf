@@ -25,7 +25,7 @@ module "cert_manager" {
   dependence_prometheus = "ignore"
   dependence_opa        = "ignore"
   iam_role_nodes        = "arn:aws:iam::000000000000:role/dummy"
-  hostzone              = "*"
+  hostzone              = ["arn:aws:route53:::hostedzone/*"]
 }
 
 module "opa" {
