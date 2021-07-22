@@ -24,21 +24,75 @@ resource "kubernetes_namespace" "monitoring" {
   }
 }
 
-resource "helm_release" "kube_state_metrics" {
-  name       = "kube-state-metrics"
-  repository = "https://kubernetes.github.io/kube-state-metrics"
-  chart      = "kube-state-metrics"
-  version    = "2.13.3"
-  namespace  = "monitoring"
-}
-
 resource "helm_release" "prometheus" {
   name       = "prometheus"
   repository = "https://prometheus-community.github.io/helm-charts"
-  chart      = "prometheus"
-  version    = "14.4.1"
+  chart      = "kube-prometheus-stack"
+  version    = "17.0.0"
   namespace  = "monitoring"
-  depends_on = [helm_release.kube_state_metrics]
+  depends_on = [kubernetes_namespace.monitoring]
+
+  set {
+    name = "defaultRules.create"
+    value = "false"
+  }
+  set {
+    name = "alertmanager.enabled"
+    value = "false"
+  }
+  set {
+    name = "grafana.enabled"
+    value = "false"
+  }
+  set {
+    name = "kubeApiServer.enabled"
+    value = "false"
+  }
+  set {
+    name = "kubelet.enabled"
+    value = "false"
+  }
+  set {
+    name = "kubeControllerManager.enabled"
+    value = "false"
+  }
+  set {
+    name = "coreDns.enabled"
+    value = "false"
+  }
+  set {
+    name = "kubeDns.enabled"
+    value = "false"
+  }
+  set {
+    name = "kubeEtcd.enabled"
+    value = "false"
+  }
+  set {
+    name = "kubeScheduler.enabled"
+    value = "false"
+  }
+  set {
+    name = "kubeProxy.enabled"
+    value = "false"
+  }
+  set {
+    name = "kubeStateMetrics.enabled"
+    value = "false"
+  }
+  set {
+    name = "nodeExporter.enabled"
+    value = "false"
+  }
+  set {
+    name = "prometheusOperator.enabled"
+    value = "false"
+  }
+  set {
+    name = "prometheus.enabled"
+    value = "false"
+  }
+
 }
 
 module "cert_manager" {
