@@ -18,28 +18,12 @@ provider "aws" {
   }
 }
 
-module "prometheus" {
-  source = "github.com/ministryofjustice/cloud-platform-terraform-monitoring?ref=1.7.2"
-
-  alertmanager_slack_receivers = [
-    {
-      severity = "warning"
-      webhook  = "https://hooks.slack.com/services/XXXXX/XXXX/XXXXX"
-      channel  = "#lower-priority-alarms"
-  }]
-
-  iam_role_nodes                             = "arn:aws:iam::000000000000:role/dummy"
-  pagerduty_config                           = "dummy"
-  enable_ecr_exporter                        = false
-  enable_cloudwatch_exporter                 = false
-  enable_thanos_helm_chart                   = false
-  enable_thanos_sidecar                      = false
-  enable_prometheus_affinity_and_tolerations = false
-
-  cluster_domain_name           = "opa.cloud-platform.service.justice.gov.uk"
-  oidc_components_client_id     = "dummy"
-  oidc_components_client_secret = "dummmy"
-  oidc_issuer_url               = "https://justice-cloud-platform.eu.auth0.com/"
+resource "helm_release" "prometheus_operator" {
+  name       = "prometheus-operator"
+  repository = "https://prometheus-community.github.io/helm-charts"
+  chart      = "kube-prometheus-stack"
+  namespace  = "monitoring"
+  version    = "12.11.3"
 }
 
 module "cert_manager" {
@@ -54,6 +38,6 @@ module "cert_manager" {
 
 module "opa" {
   source = "../.."
-
+  depends_on = [helm_release.prometheus_operator, module.cert_manager.helm_release.cert_manager]
   cluster_domain_name = "opa.cloud-platform.service.justice.gov.uk"
 }
