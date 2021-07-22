@@ -45,6 +45,6 @@ module "cert_manager" {
 
 module "opa" {
   source = "../.."
-  depends_on = [helm_release.prometheus_operator, module.cert_manager]
+  depends_on = [helm_release.prometheus, module.cert_manager]
   cluster_domain_name = "opa.cloud-platform.service.justice.gov.uk"
 }
