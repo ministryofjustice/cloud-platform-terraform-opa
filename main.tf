@@ -79,6 +79,46 @@ resource "kubernetes_config_map" "policies_opa" {
   }
 }
 
+resource "kubernetes_config_map" "external_dns_weight" {
+  count = var.enable_external_dns_weight ? 1 : 0
+  metadata {
+    name      = "external-dns-weight"
+    namespace = helm_release.open_policy_agent.namespace
+
+    labels = {
+      "openpolicyagent.org/policy" = "rego"
+    }
+  }
+
+  data = {
+    main = file("${path.module}/resources/policies/external-dns-annotation/ingress_external_dns_no_weight.rego")
+  }
+
+  lifecycle {
+    ignore_changes = [metadata.0.annotations]
+  }
+}
+
+resource "kubernetes_config_map" "external_dns_identifier" {
+  count = var.enable_external_dns_weight ? 1 : 0
+  metadata {
+    name      = "external-dns-identifier"
+    namespace = helm_release.open_policy_agent.namespace
+
+    labels = {
+      "openpolicyagent.org/policy" = "rego"
+    }
+  }
+
+  data = {
+    main = file("${path.module}/resources/policies/external-dns-annotation/ingress_external_dns_no_identifier.rego")
+  }
+
+  lifecycle {
+    ignore_changes = [metadata.0.annotations]
+  }
+}
+
 resource "kubernetes_config_map" "valid_host" {
   count = var.enable_invalid_hostname_policy ? 1 : 0
   metadata {
