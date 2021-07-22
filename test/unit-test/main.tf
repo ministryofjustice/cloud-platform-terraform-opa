@@ -26,10 +26,9 @@ resource "kubernetes_namespace" "monitoring" {
 
 resource "helm_release" "prometheus" {
   name       = "prometheus"
-  repository = "https://charts.bitnami.com/bitnami"
-  chart      = "kube-prometheus"
+  repository = "https://prometheus-community.github.io/helm-charts"
+  chart      = "kube-prometheus-stack"
   namespace  = "monitoring"
-  version    = "6.1.2"
   depends_on = [kubernetes_namespace.monitoring]
 }
 
