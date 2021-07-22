@@ -90,7 +90,7 @@ resource "helm_release" "prometheus" {
   }
   set {
     name  = "prometheus.enabled"
-    value = "false"
+    value = "true"
   }
 
 }
