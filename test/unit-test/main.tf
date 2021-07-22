@@ -33,81 +33,90 @@ resource "helm_release" "prometheus" {
   depends_on = [kubernetes_namespace.monitoring]
 
   set {
-    name = "defaultRules.create"
+    name  = "defaultRules.create"
     value = "false"
   }
   set {
-    name = "alertmanager.enabled"
+    name  = "alertmanager.enabled"
     value = "false"
   }
   set {
-    name = "grafana.enabled"
+    name  = "grafana.enabled"
     value = "false"
   }
   set {
-    name = "kubeApiServer.enabled"
+    name  = "kubeApiServer.enabled"
     value = "false"
   }
   set {
-    name = "kubelet.enabled"
+    name  = "kubelet.enabled"
     value = "false"
   }
   set {
-    name = "kubeControllerManager.enabled"
+    name  = "kubeControllerManager.enabled"
     value = "false"
   }
   set {
-    name = "coreDns.enabled"
+    name  = "coreDns.enabled"
     value = "false"
   }
   set {
-    name = "kubeDns.enabled"
+    name  = "kubeDns.enabled"
     value = "false"
   }
   set {
-    name = "kubeEtcd.enabled"
+    name  = "kubeEtcd.enabled"
     value = "false"
   }
   set {
-    name = "kubeScheduler.enabled"
+    name  = "kubeScheduler.enabled"
     value = "false"
   }
   set {
-    name = "kubeProxy.enabled"
+    name  = "kubeProxy.enabled"
     value = "false"
   }
   set {
-    name = "kubeStateMetrics.enabled"
+    name  = "kubeStateMetrics.enabled"
     value = "false"
   }
   set {
-    name = "nodeExporter.enabled"
+    name  = "nodeExporter.enabled"
     value = "false"
   }
   set {
-    name = "prometheusOperator.enabled"
+    name  = "prometheusOperator.enabled"
     value = "false"
   }
   set {
-    name = "prometheus.enabled"
+    name  = "prometheus.enabled"
     value = "false"
   }
 
 }
 
-module "cert_manager" {
-  source                = "github.com/ministryofjustice/cloud-platform-terraform-certmanager?ref=1.2.1"
-  cluster_domain_name   = "opa.cloud-platform.service.justice.gov.uk"
-  eks                   = false
-  dependence_prometheus = "ignore"
-  dependence_opa        = "ignore"
-  iam_role_nodes        = "arn:aws:iam::000000000000:role/dummy"
-  hostzone              = ["arn:aws:route53:::hostedzone/*"]
-  depends_on            = [helm_release.prometheus]
+resource "kubernetes_namespace" "cert_manager" {
+  metadata {
+    name = "cert-manager"
+  }
+}
+
+resource "helm_release" "cert_manager" {
+  name       = "cert-manager"
+  repository = "https://charts.jetstack.io"
+  chart      = "cert-manager"
+  version    = "1.4.1"
+  namespace  = "cert-manager"
+  depends_on = [kubernetes_namespace.cert_manager, helm_release.prometheus]
+
+  set {
+    name  = "installCRDs"
+    value = "true"
+  }
 }
 
 module "opa" {
   source              = "../.."
-  depends_on          = [module.cert_manager]
+  depends_on          = [helm_release.cert_manager]
   cluster_domain_name = "opa.cloud-platform.service.justice.gov.uk"
 }
