@@ -28,7 +28,7 @@ resource "helm_release" "prometheus" {
   name       = "prometheus"
   repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "kube-prometheus-stack"
-  version    = "17.0.0"
+  version    = "12.11.3"
   namespace  = "monitoring"
   depends_on = [kubernetes_namespace.monitoring]
 
@@ -105,7 +105,7 @@ resource "helm_release" "cert_manager" {
   name       = "cert-manager"
   repository = "https://charts.jetstack.io"
   chart      = "cert-manager"
-  version    = "1.4.1"
+  version    = "1.4.0"
   namespace  = "cert-manager"
   depends_on = [kubernetes_namespace.cert_manager, helm_release.prometheus]
 
