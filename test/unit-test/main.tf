@@ -12,7 +12,7 @@ resource "helm_release" "prometheus" {
   name       = "prometheus"
   repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "kube-prometheus-stack"
-  version    = "12.11.3"
+  version    = "16.14.1"
   namespace  = "monitoring"
   depends_on = [kubernetes_namespace.monitoring]
 
