@@ -4,41 +4,27 @@ on:
 
 jobs:
   go-tests:
-    name: Run Terratest Unit Tests
+    name: Run tests
     runs-on: ubuntu-latest
-    # This is not needed now but it will for integration tests
-    # env:
-    #   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set up Go
-        uses: actions/setup-go@v1
-        with:
-          go-version: 1.13
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.13.x
+          terraform_version: 0.14.x
           terraform_wrapper: false
 
-      - name: Download Go Modules
-        working-directory: test
-        run: go mod download
-
-      - uses: engineerd/setup-kind@v0.5.0
-      - name: Set up Kind for module testing
+      - name: Run OPA tests
+        working-directory: resources/policies
         run: |
-          kubectl cluster-info
-          kubectl get pods -n kube-system
-          echo "current-context:" $(kubectl config current-context)
+          curl -L -o opa "https://openpolicyagent.org/downloads/v0.30.2/opa_linux_amd64_static"
+          chmod +x ./opa
+          ./opa test .
 
-      - name: Run Go Tests
-        working-directory: test
+      - name: Run tf Tests
+        working-directory: test/unit-test
         run: |
-          kind get kubeconfig > ./kubeconfig
-          export KUBE_CONFIG_PATH="$PWD/kubeconfig"
-          go test -v
+          terraform init
+          terraform validate

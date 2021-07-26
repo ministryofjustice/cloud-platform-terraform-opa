@@ -6,6 +6,9 @@
 # needs to include the opa config yaml, eg:
 opa:
 
+certManager:
+  enabled: true
+
 # To _fail closed_ on failures, change to Fail. During initial testing, we
 # recommend leaving the failure policy as Ignore.
 admissionControllerFailurePolicy: Fail
