@@ -4,7 +4,9 @@ ingress_with_modsec := {
   "kind": "Ingress",
   "metadata": {
     "annotations": {
-      "nginx.ingress.kubernetes.io/enable-modsecurity": "true"
+      "nginx.ingress.kubernetes.io/enable-modsecurity": "true",
+      "external-dns.alpha.kubernetes.io/aws-weight": "100",
+      "external-dns.alpha.kubernetes.io/set-identifier": "whatever",
     }
   }
 }
@@ -13,7 +15,9 @@ ingress_with_modsec_snippet := {
   "kind": "Ingress",
   "metadata": {
     "annotations": {
-      "nginx.ingress.kubernetes.io/modsecurity-snippet": "whatever"
+      "nginx.ingress.kubernetes.io/modsecurity-snippet": "whatever",
+      "external-dns.alpha.kubernetes.io/aws-weight": "100",
+      "external-dns.alpha.kubernetes.io/set-identifier": "whatever",
     }
   }
 }
@@ -23,7 +27,9 @@ ingress_class_with_modsec := {
   "metadata": {
     "annotations": {
       "kubernetes.io/ingress.class": "nginx",
-      "nginx.ingress.kubernetes.io/enable-modsecurity": "true"
+      "nginx.ingress.kubernetes.io/enable-modsecurity": "true",
+      "external-dns.alpha.kubernetes.io/aws-weight": "100",
+      "external-dns.alpha.kubernetes.io/set-identifier": "whatever",
     }
   }
 }
@@ -33,7 +39,9 @@ ingress_class_with_modsec_snippet := {
   "metadata": {
     "annotations": {
       "kubernetes.io/ingress.class": "nginx",
-      "nginx.ingress.kubernetes.io/modsecurity-snippet": "whatever"
+      "nginx.ingress.kubernetes.io/modsecurity-snippet": "whatever",
+      "external-dns.alpha.kubernetes.io/aws-weight": "100",
+      "external-dns.alpha.kubernetes.io/set-identifier": "whatever",
     }
   }
 }
@@ -44,7 +52,9 @@ diff_ingress_class_with_modsec := {
     "annotations": {
       "kubernetes.io/ingress.class": "some-other-ingress-class",
       "nginx.ingress.kubernetes.io/enable-modsecurity": "true",
-      "nginx.ingress.kubernetes.io/modsecurity-snippet": "whatever"
+      "nginx.ingress.kubernetes.io/modsecurity-snippet": "whatever",
+      "external-dns.alpha.kubernetes.io/aws-weight": "100",
+      "external-dns.alpha.kubernetes.io/set-identifier": "whatever",
     }
   }
 }

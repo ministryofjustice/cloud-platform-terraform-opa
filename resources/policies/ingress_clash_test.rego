@@ -6,7 +6,11 @@ new_ingress(namespace, name, host) = {
   "kind": "Ingress",
   "metadata": {
     "name": name,
-    "namespace": namespace
+    "namespace": namespace,
+    "annotations": {
+      "external-dns.alpha.kubernetes.io/aws-weight": "100",
+      "external-dns.alpha.kubernetes.io/set-identifier": "whatever",
+    }
   },
   "spec": {
     "rules": [{ "host": host }]
