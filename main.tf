@@ -47,7 +47,6 @@ resource "null_resource" "kube_system_ns_label" {
 }
 
 resource "kubernetes_config_map" "policies_opa" {
-
   for_each = {
     policy-default                               = "main",
     policy-cloud-platform-admission              = "cloud_platform_admission",
@@ -80,8 +79,6 @@ resource "kubernetes_config_map" "policies_opa" {
 }
 
 resource "kubernetes_config_map" "external_dns_policies" {
-  # count = var.enable_external_dns_weight ? 1 : 0
-
   for_each = var.enable_external_dns_weight ? {
     external-dns-identifier        = "ingress_external_dns_no_identifier",
     external-dns-weight            = "ingress_external_dns_no_weight",
