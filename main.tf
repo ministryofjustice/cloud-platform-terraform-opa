@@ -79,10 +79,17 @@ resource "kubernetes_config_map" "policies_opa" {
   }
 }
 
-resource "kubernetes_config_map" "external_dns_weight" {
-  count = var.enable_external_dns_weight ? 1 : 0
+resource "kubernetes_config_map" "external_dns_policies" {
+  # count = var.enable_external_dns_weight ? 1 : 0
+
+  for_each = var.enable_external_dns_weight ? {
+    external-dns-identifier        = "ingress_external_dns_no_identifier",
+    external-dns-weight            = "ingress_external_dns_no_weight",
+    external-dns-identifier-format = "ingress_external_dns_identifier_format",
+  } : {}
+
   metadata {
-    name      = "external-dns-weight"
+    name      = each.key
     namespace = helm_release.open_policy_agent.namespace
 
     labels = {
@@ -91,27 +98,9 @@ resource "kubernetes_config_map" "external_dns_weight" {
   }
 
   data = {
-    main = file("${path.module}/resources/policies/external-dns-annotation/ingress_external_dns_no_weight.rego")
-  }
-
-  lifecycle {
-    ignore_changes = [metadata.0.annotations]
-  }
-}
-
-resource "kubernetes_config_map" "external_dns_identifier" {
-  count = var.enable_external_dns_weight ? 1 : 0
-  metadata {
-    name      = "external-dns-identifier"
-    namespace = helm_release.open_policy_agent.namespace
-
-    labels = {
-      "openpolicyagent.org/policy" = "rego"
-    }
-  }
-
-  data = {
-    main = file("${path.module}/resources/policies/external-dns-annotation/ingress_external_dns_no_identifier.rego")
+    main = templatefile("${path.module}/resources/policies/external-dns-annotation/${each.value}.rego", {
+      cluster_color = var.cluster_color
+    })
   }
 
   lifecycle {
@@ -121,6 +110,7 @@ resource "kubernetes_config_map" "external_dns_identifier" {
 
 resource "kubernetes_config_map" "valid_host" {
   count = var.enable_invalid_hostname_policy ? 1 : 0
+
   metadata {
     name      = "valid-host"
     namespace = helm_release.open_policy_agent.namespace
@@ -128,11 +118,13 @@ resource "kubernetes_config_map" "valid_host" {
       "openpolicyagent.org/policy" = "rego"
     }
   }
+
   data = {
     main = templatefile("${path.module}/resources/policies-test-cluster/valid_hostname.rego", {
       cluster_domain_name = "*.${var.cluster_domain_name}"
     })
   }
+
   lifecycle {
     ignore_changes = [metadata.0.annotations]
   }
