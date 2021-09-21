@@ -3,6 +3,8 @@ package cloud_platform.admission
 ingress_with_external_dns_weight_annotation := {
   "kind": "Ingress",
   "metadata": {
+    "name": "ing-0",
+    "namespace": "ns-0",
     "annotations": {
       "external-dns.alpha.kubernetes.io/aws-weight": "100"
     }
