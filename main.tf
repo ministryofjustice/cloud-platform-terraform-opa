@@ -80,7 +80,6 @@ resource "kubernetes_config_map" "policies_opa" {
 
 resource "kubernetes_config_map" "external_dns_policies" {
   for_each = var.enable_external_dns_weight ? {
-    external-dns-identifier        = "ingress_external_dns_no_identifier",
     external-dns-weight            = "ingress_external_dns_no_weight",
     external-dns-identifier-format = "ingress_external_dns_identifier_format",
   } : {}
