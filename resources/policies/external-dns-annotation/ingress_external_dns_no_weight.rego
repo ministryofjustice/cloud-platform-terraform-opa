@@ -7,5 +7,5 @@ deny[msg] {
   input.request.kind.kind == "Ingress"
   not input.request.object.metadata.annotations["external-dns.alpha.kubernetes.io/aws-weight"]
   not input.request.object.metadata.annotations["cloud-platform.justice.gov.uk/ignore-external-dns-weight"] == "true"
-  msg := "Please add external-dns annotation for ingress"
+  msg := "Please add external-dns aws-weight annotation for ingress"
 }
