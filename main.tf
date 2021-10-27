@@ -58,7 +58,6 @@ resource "kubernetes_config_map" "policies_opa" {
     policy-ingress-no-nginx-class-modsec         = "ingress_modsec_no_nginx_class",
     policy-ingress-nginx-class-modsec-snippet    = "ingress_modsec_snippet_nginx_class",
     policy-ingress-no-nginx-class-modsec-snippet = "ingress_modsec_snippet_no_nginx_class",
-    policy-snippet-allowlist                     = "snippet_allowlist",
   }
 
   metadata {
