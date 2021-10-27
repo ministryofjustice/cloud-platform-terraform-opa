@@ -6,6 +6,11 @@
 # needs to include the opa config yaml, eg:
 opa:
 
+# Docker image and tag to deploy.
+image: openpolicyagent/opa
+imageTag: 0.33.1
+imagePullPolicy: IfNotPresent
+
 certManager:
   enabled: true
 
@@ -31,6 +36,9 @@ admissionControllerRules:
     resources: ["pods"]
 
 mgmt:
+  image: openpolicyagent/kube-mgmt
+  imageTag: "0.13"
+  imagePullPolicy: IfNotPresent
   configmapPolicies:
     enabled: true
     namespaces: [opa]
