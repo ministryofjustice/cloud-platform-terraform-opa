@@ -75,7 +75,7 @@ new_ingress_wrong_identifier_format(namespace, name, host,color) = {
     "namespace": namespace,
     "annotations": {
       "external-dns.alpha.kubernetes.io/aws-weight": "100",
-      "external-dns.alpha.kubernetes.io/set-identifier": concat("-", [name, namespace, color,"soemthing"])
+      "external-dns.alpha.kubernetes.io/set-identifier": concat("-", [name, namespace, color,"something"])
     }
   },
   "spec": {
