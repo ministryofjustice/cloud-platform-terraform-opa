@@ -7,6 +7,25 @@ new_ingress_forbidden_snippet_value(namespace, name, host, forbidden_value) = {
     "name": name,
     "namespace": namespace,
     "annotations": {
+      "kubernetes.io/ingress.class": "nginx",
+      "nginx.ingress.kubernetes.io/auth-snippet": forbidden_value,
+      "nginx.ingress.kubernetes.io/configuration-snippet": forbidden_value,
+      "nginx.ingress.kubernetes.io/server-snippet": forbidden_value,
+      "cloud-platform.justice.gov.uk/ignore-external-dns-weight": "true"
+    }
+  },
+  "spec": {
+    "rules": [{ "host": host }]
+  }
+}
+
+new_modsec_ingress_forbidden_snippet_value(namespace, name, host, forbidden_value) = {
+  "apiVersion": "networking.k8s.io/v1beta1",
+  "kind": "Ingress",
+  "metadata": {
+    "name": name,
+    "namespace": namespace,
+    "annotations": {
       "kubernetes.io/ingress.class": "modsec-01",
       "nginx.ingress.kubernetes.io/auth-snippet": forbidden_value,
       "nginx.ingress.kubernetes.io/configuration-snippet": forbidden_value,
@@ -37,7 +56,7 @@ test_deny_ingress_with_forbidden_server_snippet {
 
 test_deny_ingress_with_forbidden_modsec_snippet {
   denied
-    with input as new_admission_review("CREATE", new_ingress_forbidden_snippet_value("ns-0", "ing-0", "ing-0.example.com", "kubernetes.io"), null)
+    with input as new_admission_review("CREATE", new_modsec_ingress_forbidden_snippet_value("ns-0", "ing-0", "ing-0.example.com", "kubernetes.io"), null)
 }
 
 test_not_deny_ingress_with_valid_auth_snippet {
@@ -57,5 +76,5 @@ test_not_deny_ingress_with_valid_configuration_snippet {
 
 test_not_deny_ingress_with_valid_modsec_snippet {
   not denied
-    with input as new_admission_review("CREATE", new_ingress_forbidden_snippet_value("ns-0", "ing-0", "ing-0.example.com", "correct"), null)
+    with input as new_admission_review("CREATE", new_modsec_ingress_forbidden_snippet_value("ns-0", "ing-0", "ing-0.example.com", "correct"), null)
 }
