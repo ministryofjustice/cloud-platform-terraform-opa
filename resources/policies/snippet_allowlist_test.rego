@@ -27,9 +27,7 @@ new_modsec_ingress_forbidden_snippet_value(namespace, name, host, forbidden_valu
     "namespace": namespace,
     "annotations": {
       "kubernetes.io/ingress.class": "modsec-01",
-      "nginx.ingress.kubernetes.io/auth-snippet": forbidden_value,
-      "nginx.ingress.kubernetes.io/configuration-snippet": forbidden_value,
-      "nginx.ingress.kubernetes.io/server-snippet": forbidden_value,
+
       "nginx.ingress.kubernetes.io/modsecurity-snippet": forbidden_value,
       "cloud-platform.justice.gov.uk/ignore-external-dns-weight": "true"
     }
