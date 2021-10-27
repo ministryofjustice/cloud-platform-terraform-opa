@@ -7,7 +7,7 @@ new_ingress_forbidden_snippet_value(namespace, name, host, forbidden_value) = {
     "name": name,
     "namespace": namespace,
     "annotations": {
-      "kubernetes.io/ingress.class": forbidden_value,
+      "kubernetes.io/ingress.class": "modsec-01",
       "nginx.ingress.kubernetes.io/auth-snippet": forbidden_value,
       "nginx.ingress.kubernetes.io/configuration-snippet": forbidden_value,
       "nginx.ingress.kubernetes.io/server-snippet": forbidden_value,
