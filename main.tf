@@ -105,6 +105,8 @@ resource "kubernetes_config_map" "external_dns_policies" {
   }
 }
 
+# Policy for test clusters, to use only cluster domain and integration test domain as valid host names
+
 resource "kubernetes_config_map" "valid_host" {
   count = var.enable_invalid_hostname_policy ? 1 : 0
 
@@ -118,7 +120,7 @@ resource "kubernetes_config_map" "valid_host" {
 
   data = {
     main = templatefile("${path.module}/resources/policies-test-cluster/valid_hostname.rego", {
-      cluster_domain_name = "*.${var.cluster_domain_name}"
+      valid_domain_names = "*.${var.cluster_domain_name}, *.${var.integration_test_zone}"
     })
   }
 

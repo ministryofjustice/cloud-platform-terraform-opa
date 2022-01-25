@@ -30,11 +30,11 @@ new_ingress(host) = {
 
 test_invalid_host_create_notallowed {
   denied
-    with input as new_admission_review("CREATE", new_ingress("${not.cluster_domain_name}"), null)
+    with input as new_admission_review("CREATE", new_ingress("${not.valid_domain_names}"), null)
 }
 
 
 test_valid_host_create_allowed {
   not denied
-    with input as new_admission_review("CREATE", new_ingress("${cluster_domain_name}"), null)
+    with input as new_admission_review("CREATE", new_ingress("${valid_domain_names}"), null)
 }
