@@ -120,7 +120,7 @@ resource "kubernetes_config_map" "valid_host" {
 
   data = {
     main = templatefile("${path.module}/resources/policies-test-cluster/valid_hostname.rego", {
-      valid_domain_names = "*.${var.cluster_domain_name}, *.${var.integration_test_zone}"
+      valid_domain_names = "*.${var.cluster_domain_name},*.${var.integration_test_zone}"
     })
   }
 
