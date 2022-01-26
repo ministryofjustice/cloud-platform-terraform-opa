@@ -19,3 +19,8 @@ variable "enable_external_dns_weight" {
   default     = false
   type        = bool
 }
+
+variable "integration_test_zone" {
+  description = "Integration test zone, for test clusters to use it for valid ingress policy"
+  default     = ""
+}

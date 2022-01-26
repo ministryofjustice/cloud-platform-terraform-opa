@@ -9,7 +9,7 @@ deny[msg] {
   msg := sprintf("invalid ingress host %q", [host])
 }
 valid_ingress_hosts = {host |
-  whitelist := "${cluster_domain_name}"
+  whitelist := "${valid_domain_names}"
   hosts := split(whitelist, ",")
   host := hosts[_]
 }
