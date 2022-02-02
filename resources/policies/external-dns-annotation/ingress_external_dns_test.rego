@@ -14,6 +14,8 @@ ingress_with_external_dns_weight_annotation := {
 ingress_with_external_dns_identifier_annotation := {
   "kind": "Ingress",
   "metadata": {
+    "name": "ing-0",
+    "namespace": "ns-0",
     "annotations": {
       "external-dns.alpha.kubernetes.io/set-identifier": "whatever"
     }
@@ -23,6 +25,8 @@ ingress_with_external_dns_identifier_annotation := {
 ingress_with_false_ignore_annotation := {
   "kind": "Ingress",
   "metadata": {
+    "name": "ing-0",
+    "namespace": "ns-0",
     "annotations": {
       "cloud-platform.justice.gov.uk/ignore-external-dns-weight": "false"
     }
@@ -32,6 +36,8 @@ ingress_with_false_ignore_annotation := {
 ingress_with_no_external_dns_and_ignore_annotation := {
   "kind": "Ingress",
   "metadata": {
+    "name": "ing-0",
+    "namespace": "ns-0",
     "annotations": {}
   }
 }
@@ -39,6 +45,8 @@ ingress_with_no_external_dns_and_ignore_annotation := {
 ingress_with_external_dns_and_ignore_annotation := {
   "kind": "Ingress",
   "metadata": {
+    "name": "ing-0",
+    "namespace": "ns-0",
     "annotations": {
       "external-dns.alpha.kubernetes.io/aws-weight": "100",
       "external-dns.alpha.kubernetes.io/set-identifier": "whatever",
