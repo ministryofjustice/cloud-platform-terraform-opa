@@ -9,5 +9,5 @@ deny[msg] {
   live_guide := "https://user-guide.cloud-platform.service.justice.gov.uk/documentation/other-topics/migrate-to-live.html#step-5-add-a-new-ingress-resource-in-quot-live-quot-cluster"
   not input.request.object.metadata.annotations["external-dns.alpha.kubernetes.io/aws-weight"]
   not input.request.object.metadata.annotations["cloud-platform.justice.gov.uk/ignore-external-dns-weight"] == "true"
-  msg := sprintf("Please add valid external-dns set-identifier annotation for ingress %v/%v, remember: <ingress-name>-<ns>-<color>. Color is blue for 'live-1' refer: %v and green for 'live' refer: %v", [input.request.object.metadata.namespace, input.request.object.metadata.name, live_1_guide, live_guide])
+  msg := sprintf("\nPlease add valid external-dns set-identifier annotation for ingress %v/%v, remember: <ingress-name>-<ns>-<color>. \nThe color 'blue' corresponds to the 'live-1' ingress, for reference: \n%v. \nThe color 'green' corresponds to the 'live' ingress, for reference: \n%v", [input.request.object.metadata.namespace, input.request.object.metadata.name, live_1_guide, live_guide])
 }
