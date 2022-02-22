@@ -9,3 +9,10 @@ deny[msg] {
   input.request.object.metadata.annotations["nginx.ingress.kubernetes.io/enable-modsecurity"] == "true"
   msg := "Enabling mod-security is not allowed"
 }
+
+deny[msg] {
+  input.request.kind.kind == "Ingress"
+  input.request.object.spec.ingressClassName == "default"
+  input.request.object.metadata.annotations["nginx.ingress.kubernetes.io/enable-modsecurity"] == "true"
+  msg := "Enabling mod-security is not allowed"
+}
