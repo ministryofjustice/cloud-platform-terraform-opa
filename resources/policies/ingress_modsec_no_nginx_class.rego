@@ -6,6 +6,7 @@ package cloud_platform.admission
 deny[msg] {
   input.request.kind.kind == "Ingress"
   not input.request.object.metadata.annotations["kubernetes.io/ingress.class"]
+  not input.request.object.spec.ingressClassName
   input.request.object.metadata.annotations["nginx.ingress.kubernetes.io/enable-modsecurity"] == "true"
-  msg := "Enabling mod-security is not allowed"
+  msg := "No modsec without an ingress class. "
 }
