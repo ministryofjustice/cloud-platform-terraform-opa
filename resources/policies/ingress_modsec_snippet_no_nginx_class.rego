@@ -1,6 +1,6 @@
 package cloud_platform.admission
 
-# This policy deny any ingress that don't have any ingress class annotation (using default)
+# This policy denies any ingress that don't have any ingress class annotation (using default)
 # and use "nginx.ingress.kubernetes.io/modsecurity-snippet" annotation.
 
 deny[msg] {
