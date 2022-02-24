@@ -3,7 +3,7 @@ package cloud_platform.admission
 import data.kubernetes.namespaces
 
 # The intention of this policy is to not schedule any workload on master node except for required system services which namespaces are annotated.
-# This policy deny any toleration that matches the master taint key: "node-role.kubernetes.io/master"
+# This policy denies any toleration that matches the master taint key: "node-role.kubernetes.io/master"
 
  deny[msg] {
   toleration := input.request.object.spec.tolerations[_]

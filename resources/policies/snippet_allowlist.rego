@@ -16,5 +16,5 @@ deny[msg] {
   operations[input.request.operation]
 
   some key; regex.match(annotations[key], input.request.object.metadata.annotations[key])
-  msg := sprintf("ingress '%v/%v' contains unsafe directive(s) in '%v' annotation", [input.request.object.metadata.namespace, input.request.object.metadata.name, key])
+  msg := sprintf("Ingress '%v/%v' contains unsafe directive(s) in '%v' annotation", [input.request.object.metadata.namespace, input.request.object.metadata.name, key])
 }
