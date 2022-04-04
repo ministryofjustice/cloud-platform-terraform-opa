@@ -1,14 +1,9 @@
 
-#
-# The 'opa' key embeds an OPA configuration file. See
-# https://www.openpolicyagent.org/docs/configuration.html for more details.
-# Default value is no default config. For custom config, the opa key
-# needs to include the opa config yaml, eg:
-opa:
-
 # Docker image and tag to deploy.
-image: openpolicyagent/opa
-imagePullPolicy: IfNotPresent
+image: 
+  repository: openpolicyagent/opa
+  tag: 0.37.0
+  pullPolicy: IfNotPresent
 
 certManager:
   enabled: true
@@ -35,6 +30,7 @@ admissionControllerRules:
     resources: ["pods"]
 
 mgmt:
+  enabled: true
   image: openpolicyagent/kube-mgmt
   imagePullPolicy: IfNotPresent
   configmapPolicies:
