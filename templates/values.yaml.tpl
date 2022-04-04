@@ -8,7 +8,7 @@ opa:
 
 # Docker image and tag to deploy.
 image: openpolicyagent/opa
-imageTag: 0.33.1
+imageTag: 0.38.1
 imagePullPolicy: IfNotPresent
 
 certManager:
@@ -37,7 +37,7 @@ admissionControllerRules:
 
 mgmt:
   image: openpolicyagent/kube-mgmt
-  imageTag: "0.13"
+  imageTag: "3.3.0"
   imagePullPolicy: IfNotPresent
   configmapPolicies:
     enabled: true
