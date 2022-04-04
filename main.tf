@@ -26,7 +26,7 @@ resource "helm_release" "open_policy_agent" {
   namespace  = kubernetes_namespace.opa.id
   repository = "https://open-policy-agent.github.io/kube-mgmt/charts"
   chart      = "opa"
-  version    = "4.1.0"
+  version    = "3.3.0"
 
   depends_on = [
     null_resource.kube_system_ns_label,
