@@ -32,7 +32,7 @@ admissionControllerRules:
 mgmt:
   enabled: true
   image: openpolicyagent/kube-mgmt
-  tag: null # appVersion is used by default, set to desired value to override
+  tag: 3.3.0
   imagePullPolicy: IfNotPresent
   configmapPolicies:
     enabled: true
