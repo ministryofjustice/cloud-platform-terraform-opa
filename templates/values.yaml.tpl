@@ -2,9 +2,10 @@
 certManager:
   enabled: true
 
-# To _fail closed_ on failures, change to Fail. During initial testing, we
-# recommend leaving the failure policy as Ignore.
-admissionControllerFailurePolicy: Fail
+admissionController:
+  enabled: true
+  kind: ValidatingWebhookConfiguration
+  failurePolicy: Fail
 
 # To restrict the kinds of operations and resources that are subject to OPA
 # policy checks, see the settings below. By default, all resources and
@@ -22,6 +23,12 @@ admissionControllerRules:
     apiGroups: [""]
     apiVersions: ["v1"]
     resources: ["pods"]
+
+# Docker image and tag to deploy.
+image: 
+  repository: openpolicyagent/opa
+  tag: 0.37.0
+  pullPolicy: IfNotPresent
 
 mgmt:
   enabled: true
@@ -43,6 +50,10 @@ mgmt:
 # cache of policies and data. If you want high availability you can deploy two
 # or more replicas.
 replicas: 2
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
 
 rbac:
   # If true, create & use RBAC resources
