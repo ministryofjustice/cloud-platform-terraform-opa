@@ -25,7 +25,9 @@ admissionControllerRules:
 
 mgmt:
   enabled: true
-  image: openpolicyagent/kube-mgmt
+  image:
+    repository: openpolicyagent/kube-mgmt
+    tag: 4.1.0
   imagePullPolicy: IfNotPresent
   configmapPolicies:
     enabled: true
