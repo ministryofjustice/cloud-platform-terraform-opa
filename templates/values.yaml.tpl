@@ -28,7 +28,7 @@ admissionControllerRules:
 # Docker image and tag to deploy.
 image: 
   repository: openpolicyagent/opa
-  tag: 0.37.0
+  tag: 0.38.1
   pullPolicy: IfNotPresent
 
 mgmt:
@@ -45,6 +45,7 @@ mgmt:
       - "v1/namespaces"
     namespace:
       - "extensions/v1beta1/ingresses"
+      - "networking.k8s.io/v1/ingresses"
     path: kubernetes
 
 # Number of OPA replicas to deploy. OPA maintains an eventually consistent
