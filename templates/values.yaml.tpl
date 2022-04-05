@@ -1,6 +1,7 @@
 
 certManager:
-  enabled: true
+  enabled: false
+generateCerts: true
 
 admissionController:
   enabled: true
