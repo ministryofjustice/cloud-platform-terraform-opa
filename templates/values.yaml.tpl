@@ -2,6 +2,7 @@
 # Docker image and tag to deploy.
 image: 
   repository: openpolicyagent/opa
+  tag: 0.37.0
   pullPolicy: IfNotPresent
 
 certManager:
