@@ -8,6 +8,11 @@ admissionController:
   kind: ValidatingWebhookConfiguration
   failurePolicy: Fail
 
+securityContext:
+  enabled: true
+  runAsNonRoot: true
+  runAsUser: 1
+
 # To restrict the kinds of operations and resources that are subject to OPA
 # policy checks, see the settings below. By default, all resources and
 # operations are subject to OPA policy checks.
@@ -58,8 +63,6 @@ podDisruptionBudget:
   minAvailable: 1
 
 rbac:
-  # If true, create & use RBAC resources
-  #
   create: true
   rules:
     cluster:
@@ -89,3 +92,13 @@ rbac:
       - get
       - list
       - watch
+    - apiGroups:
+        - networking.k8s.io
+      resources:
+      - ingresses
+      verbs:
+      - get
+      - list
+      - watch
+serviceAccount:
+  create: true
