@@ -1,22 +1,23 @@
 
 certManager:
   enabled: false
-generateCerts: true
+
+# Expose the prometheus scraping endpoint
+prometheus:
+  enabled: true
 
 admissionController:
   enabled: true
   kind: ValidatingWebhookConfiguration
   failurePolicy: Fail
-
-securityContext:
-  enabled: true
-  runAsNonRoot: true
-  runAsUser: 1
+  namespaceSelector:
+    matchExpressions:
+      - {key: openpolicyagent.org/webhook, operator: NotIn, values: [ignore]}
 
 # To restrict the kinds of operations and resources that are subject to OPA
 # policy checks, see the settings below. By default, all resources and
 # operations are subject to OPA policy checks.
-admissionControllerRules:
+rules:
   - operations: ["CREATE", "UPDATE"]
     apiGroups: ["extensions", "networking.k8s.io"]
     apiVersions: ["*"]
@@ -30,17 +31,21 @@ admissionControllerRules:
     apiVersions: ["v1"]
     resources: ["pods"]
 
+generateCerts: true
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
 # Docker image and tag to deploy.
-image: 
-  repository: openpolicyagent/opa
-  tag: 0.38.1
-  pullPolicy: IfNotPresent
+image: openpolicyagent/opa
+imageTag: 0.38.1
+imagePullPolicy: IfNotPresent
 
 mgmt:
   enabled: true
-  image:
-    repository: openpolicyagent/kube-mgmt
-    tag: 4.1.0
+  image: openpolicyagent/kube-mgmt
+  imageTag: 4.1.0
   imagePullPolicy: IfNotPresent
   configmapPolicies:
     enabled: true
@@ -58,12 +63,13 @@ mgmt:
 # or more replicas.
 replicas: 2
 
-podDisruptionBudget:
-  enabled: true
-  minAvailable: 1
-
 rbac:
   create: false
 serviceAccount:
   create: false
   name: opa
+
+securityContext:
+  enabled: true
+  runAsNonRoot: true
+  runAsUser: 1
