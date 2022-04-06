@@ -63,42 +63,7 @@ podDisruptionBudget:
   minAvailable: 1
 
 rbac:
-  create: true
-  rules:
-    cluster:
-    - apiGroups:
-        - ""
-      resources:
-      - configmaps
-      verbs:
-      - update
-      - patch
-      - get
-      - list
-      - watch
-    - apiGroups:
-        - ""
-      resources:
-      - namespaces
-      verbs:
-      - get
-      - list
-      - watch
-    - apiGroups:
-        - extensions
-      resources:
-      - ingresses
-      verbs:
-      - get
-      - list
-      - watch
-    - apiGroups:
-        - networking.k8s.io
-      resources:
-      - ingresses
-      verbs:
-      - get
-      - list
-      - watch
+  create: false
 serviceAccount:
-  create: true
+  create: false
+  name: opa
