@@ -1,29 +1,7 @@
 
-resource "kubernetes_namespace" "opa" {
-  metadata {
-    name = "opa"
-
-    labels = {
-      "name"                                           = "opa"
-      "openpolicyagent.org/webhook"                    = "ignore"
-      "cloud-platform.justice.gov.uk/is-production"    = "true"
-      "cloud-platform.justice.gov.uk/environment-name" = "production"
-    }
-
-    annotations = {
-      "cloud-platform.justice.gov.uk/application"   = "OPA"
-      "cloud-platform.justice.gov.uk/business-unit" = "Platforms"
-      "cloud-platform.justice.gov.uk/owner"         = "Cloud Platform: platforms@digital.justice.gov.uk"
-      "cloud-platform.justice.gov.uk/source-code"   = "https://github.com/ministryofjustice/cloud-platform-infrastructure"
-      "cloud-platform.justice.gov.uk/slack-channel" = "cloud-platform"
-      "cloud-platform-out-of-hours-alert"           = "true"
-    }
-  }
-}
-
 resource "helm_release" "open_policy_agent" {
   name       = "opa"
-  namespace  = kubernetes_namespace.opa.id
+  namespace  = "opa"
   repository = "https://open-policy-agent.github.io/kube-mgmt/charts"
   chart      = "opa"
   version    = "3.2.0"
@@ -136,7 +114,7 @@ resource "kubernetes_config_map" "valid_host" {
 resource "kubernetes_resource_quota" "namespace_quota" {
   metadata {
     name      = "namespace-quota"
-    namespace = kubernetes_namespace.opa.id
+    namespace = "opa"
   }
   spec {
     hard = {
@@ -152,7 +130,7 @@ resource "kubernetes_resource_quota" "namespace_quota" {
 resource "kubernetes_limit_range" "opa" {
   metadata {
     name      = "limitrange"
-    namespace = kubernetes_namespace.opa.id
+    namespace = "opa"
   }
   spec {
     limit {
