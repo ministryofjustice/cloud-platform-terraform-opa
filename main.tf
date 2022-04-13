@@ -8,6 +8,7 @@ resource "helm_release" "open_policy_agent" {
 
   depends_on = [
     null_resource.kube_system_ns_label,
+    kubernetes_service_account.opa
   ]
 
   values = [templatefile("${path.module}/templates/values.yaml.tpl", {})]

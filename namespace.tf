@@ -66,12 +66,12 @@ resource "kubernetes_cluster_role_binding" "opa" {
   role_ref {
     api_group = "rbac.authorization.k8s.io"
     kind      = "ClusterRole"
-    name      = kubernetes_cluster_role.opa.name
+    name      = "opa"
   }
 
   subject {
     kind      = "ServiceAccount"
-    name      = kubernetes_service_account.opa.name
+    name      = "opa"
     namespace = kubernetes_namespace.opa.id
   }
 }
