@@ -54,7 +54,7 @@ resource "kubernetes_cluster_role" "opa" {
 resource "kubernetes_service_account" "opa" {
   metadata {
     name      = "opa"
-    namespace = kubernetes_namespace.opa.name
+    namespace = kubernetes_namespace.opa.id
   }
 }
 
@@ -72,6 +72,46 @@ resource "kubernetes_cluster_role_binding" "opa" {
   subject {
     kind      = "ServiceAccount"
     name      = kubernetes_service_account.opa.name
-    namespace = kubernetes_namespace.opa.name
+    namespace = kubernetes_namespace.opa.id
+  }
+}
+
+##################
+# Resource Quota #
+##################
+
+resource "kubernetes_resource_quota" "namespace_quota" {
+  metadata {
+    name      = "namespace-quota"
+    namespace = kubernetes_namespace.opa.id
+  }
+  spec {
+    hard = {
+      pods = 50
+    }
+  }
+}
+
+##############
+# LimitRange #
+##############
+
+resource "kubernetes_limit_range" "opa" {
+  metadata {
+    name      = "limitrange"
+    namespace = kubernetes_namespace.opa.id
+  }
+  spec {
+    limit {
+      type = "Container"
+      default = {
+        cpu    = "80m"
+        memory = "400Mi"
+      }
+      default_request = {
+        cpu    = "4m"
+        memory = "50Mi"
+      }
+    }
   }
 }
