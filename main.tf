@@ -1,7 +1,7 @@
 
 resource "helm_release" "open_policy_agent" {
   name       = "opa"
-  namespace  = kubernetes_namespace.opa.name
+  namespace  = kubernetes_namespace.opa.id
   repository = "https://open-policy-agent.github.io/kube-mgmt/charts"
   chart      = "opa"
   version    = "3.2.0"
@@ -41,7 +41,7 @@ resource "kubernetes_config_map" "policies_opa" {
 
   metadata {
     name      = each.key
-    namespace = kubernetes_namespace.opa.name
+    namespace = kubernetes_namespace.opa.id
 
     labels = {
       "openpolicyagent.org/policy" = "rego"
@@ -65,7 +65,7 @@ resource "kubernetes_config_map" "external_dns_policies" {
 
   metadata {
     name      = each.key
-    namespace = kubernetes_namespace.opa.name
+    namespace = kubernetes_namespace.opa.id
 
     labels = {
       "openpolicyagent.org/policy" = "rego"
@@ -90,7 +90,7 @@ resource "kubernetes_config_map" "valid_host" {
 
   metadata {
     name      = "valid-host"
-    namespace = kubernetes_namespace.opa.name
+    namespace = kubernetes_namespace.opa.id
     labels = {
       "openpolicyagent.org/policy" = "rego"
     }
@@ -114,7 +114,7 @@ resource "kubernetes_config_map" "valid_host" {
 resource "kubernetes_resource_quota" "namespace_quota" {
   metadata {
     name      = "namespace-quota"
-    namespace = kubernetes_namespace.opa.name
+    namespace = kubernetes_namespace.opa.id
   }
   spec {
     hard = {
@@ -130,7 +130,7 @@ resource "kubernetes_resource_quota" "namespace_quota" {
 resource "kubernetes_limit_range" "opa" {
   metadata {
     name      = "limitrange"
-    namespace = kubernetes_namespace.opa.name
+    namespace = kubernetes_namespace.opa.id
   }
   spec {
     limit {
