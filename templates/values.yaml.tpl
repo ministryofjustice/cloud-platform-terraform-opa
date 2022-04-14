@@ -1,3 +1,4 @@
+opa: false
 
 certManager:
   enabled: false
