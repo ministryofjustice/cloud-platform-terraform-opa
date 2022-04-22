@@ -14,23 +14,22 @@ admissionController:
   namespaceSelector:
     matchExpressions:
       - {key: openpolicyagent.org/webhook, operator: NotIn, values: [ignore]}
-
-# To restrict the kinds of operations and resources that are subject to OPA
-# policy checks, see the settings below. By default, all resources and
-# operations are subject to OPA policy checks.
-rules:
-  - operations: ["CREATE", "UPDATE"]
-    apiGroups: ["extensions", "networking.k8s.io"]
-    apiVersions: ["*"]
-    resources: ["ingresses"]
-  - operations: ["CREATE", "UPDATE"]
-    apiGroups: [""]
-    apiVersions: ["v1"]
-    resources: ["services"]
-  - operations: ["CREATE", "UPDATE"]
-    apiGroups: [""]
-    apiVersions: ["v1"]
-    resources: ["pods"]
+  # To restrict the kinds of operations and resources that are subject to OPA
+  # policy checks, see the settings below. By default, all resources and
+  # operations are subject to OPA policy checks.
+  rules:
+    - operations: ["CREATE", "UPDATE"]
+      apiGroups: ["extensions", "networking.k8s.io"]
+      apiVersions: ["*"]
+      resources: ["ingresses"]
+    - operations: ["CREATE", "UPDATE"]
+      apiGroups: [""]
+      apiVersions: ["v1"]
+      resources: ["services"]
+    - operations: ["CREATE", "UPDATE"]
+      apiGroups: [""]
+      apiVersions: ["v1"]
+      resources: ["pods"]
 
 generateCerts: true
 
