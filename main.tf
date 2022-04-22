@@ -1,35 +1,14 @@
 
-resource "kubernetes_namespace" "opa" {
-  metadata {
-    name = "opa"
-
-    labels = {
-      "name"                                           = "opa"
-      "openpolicyagent.org/webhook"                    = "ignore"
-      "cloud-platform.justice.gov.uk/is-production"    = "true"
-      "cloud-platform.justice.gov.uk/environment-name" = "production"
-    }
-
-    annotations = {
-      "cloud-platform.justice.gov.uk/application"   = "OPA"
-      "cloud-platform.justice.gov.uk/business-unit" = "Platforms"
-      "cloud-platform.justice.gov.uk/owner"         = "Cloud Platform: platforms@digital.justice.gov.uk"
-      "cloud-platform.justice.gov.uk/source-code"   = "https://github.com/ministryofjustice/cloud-platform-infrastructure"
-      "cloud-platform.justice.gov.uk/slack-channel" = "cloud-platform"
-      "cloud-platform-out-of-hours-alert"           = "true"
-    }
-  }
-}
-
 resource "helm_release" "open_policy_agent" {
   name       = "opa"
   namespace  = kubernetes_namespace.opa.id
-  repository = "https://charts.helm.sh/stable"
+  repository = "https://open-policy-agent.github.io/kube-mgmt/charts"
   chart      = "opa"
-  version    = "1.14.4"
+  version    = "3.2.0"
 
   depends_on = [
     null_resource.kube_system_ns_label,
+    kubernetes_service_account.opa
   ]
 
   values = [templatefile("${path.module}/templates/values.yaml.tpl", {})]
@@ -63,7 +42,7 @@ resource "kubernetes_config_map" "policies_opa" {
 
   metadata {
     name      = each.key
-    namespace = helm_release.open_policy_agent.namespace
+    namespace = kubernetes_namespace.opa.id
 
     labels = {
       "openpolicyagent.org/policy" = "rego"
@@ -87,7 +66,7 @@ resource "kubernetes_config_map" "external_dns_policies" {
 
   metadata {
     name      = each.key
-    namespace = helm_release.open_policy_agent.namespace
+    namespace = kubernetes_namespace.opa.id
 
     labels = {
       "openpolicyagent.org/policy" = "rego"
@@ -112,7 +91,7 @@ resource "kubernetes_config_map" "valid_host" {
 
   metadata {
     name      = "valid-host"
-    namespace = helm_release.open_policy_agent.namespace
+    namespace = kubernetes_namespace.opa.id
     labels = {
       "openpolicyagent.org/policy" = "rego"
     }
@@ -126,45 +105,5 @@ resource "kubernetes_config_map" "valid_host" {
 
   lifecycle {
     ignore_changes = [metadata.0.annotations]
-  }
-}
-
-##################
-# Resource Quota #
-##################
-
-resource "kubernetes_resource_quota" "namespace_quota" {
-  metadata {
-    name      = "namespace-quota"
-    namespace = kubernetes_namespace.opa.id
-  }
-  spec {
-    hard = {
-      pods = 50
-    }
-  }
-}
-
-##############
-# LimitRange #
-##############
-
-resource "kubernetes_limit_range" "opa" {
-  metadata {
-    name      = "limitrange"
-    namespace = kubernetes_namespace.opa.id
-  }
-  spec {
-    limit {
-      type = "Container"
-      default = {
-        cpu    = "80m"
-        memory = "400Mi"
-      }
-      default_request = {
-        cpu    = "4m"
-        memory = "50Mi"
-      }
-    }
   }
 }

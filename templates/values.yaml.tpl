@@ -1,27 +1,24 @@
-
-#
-# The 'opa' key embeds an OPA configuration file. See
-# https://www.openpolicyagent.org/docs/configuration.html for more details.
-# Default value is no default config. For custom config, the opa key
-# needs to include the opa config yaml, eg:
-opa:
-
-# Docker image and tag to deploy.
-image: openpolicyagent/opa
-imageTag: 0.33.1
-imagePullPolicy: IfNotPresent
+opa: false
 
 certManager:
+  enabled: false
+
+# Expose the prometheus scraping endpoint
+prometheus:
   enabled: true
 
-# To _fail closed_ on failures, change to Fail. During initial testing, we
-# recommend leaving the failure policy as Ignore.
-admissionControllerFailurePolicy: Fail
+admissionController:
+  enabled: true
+  kind: ValidatingWebhookConfiguration
+  failurePolicy: Fail
+  namespaceSelector:
+    matchExpressions:
+      - {key: openpolicyagent.org/webhook, operator: NotIn, values: [ignore]}
 
 # To restrict the kinds of operations and resources that are subject to OPA
 # policy checks, see the settings below. By default, all resources and
 # operations are subject to OPA policy checks.
-admissionControllerRules:
+rules:
   - operations: ["CREATE", "UPDATE"]
     apiGroups: ["extensions", "networking.k8s.io"]
     apiVersions: ["*"]
@@ -35,9 +32,21 @@ admissionControllerRules:
     apiVersions: ["v1"]
     resources: ["pods"]
 
+generateCerts: true
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+# Docker image and tag to deploy.
+image: openpolicyagent/opa
+imageTag: 0.38.1
+imagePullPolicy: IfNotPresent
+
 mgmt:
+  enabled: true
   image: openpolicyagent/kube-mgmt
-  imageTag: "0.13"
+  imageTag: 4.1.0
   imagePullPolicy: IfNotPresent
   configmapPolicies:
     enabled: true
@@ -47,6 +56,7 @@ mgmt:
       - "v1/namespaces"
     namespace:
       - "extensions/v1beta1/ingresses"
+      - "networking.k8s.io/v1/ingresses"
     path: kubernetes
 
 # Number of OPA replicas to deploy. OPA maintains an eventually consistent
@@ -55,34 +65,12 @@ mgmt:
 replicas: 2
 
 rbac:
-  # If true, create & use RBAC resources
-  #
-  create: true
-  rules:
-    cluster:
-    - apiGroups:
-        - ""
-      resources:
-      - configmaps
-      verbs:
-      - update
-      - patch
-      - get
-      - list
-      - watch
-    - apiGroups:
-        - ""
-      resources:
-      - namespaces
-      verbs:
-      - get
-      - list
-      - watch
-    - apiGroups:
-        - extensions
-      resources:
-      - ingresses
-      verbs:
-      - get
-      - list
-      - watch
+  create: false
+serviceAccount:
+  create: false
+  name: opa
+
+securityContext:
+  enabled: true
+  runAsNonRoot: true
+  runAsUser: 1
