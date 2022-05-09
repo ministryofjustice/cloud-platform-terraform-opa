@@ -58,3 +58,7 @@ No modules.
 |------|-------------|
 | <a name="output_helm_opa_status"></a> [helm\_opa\_status](#output\_helm\_opa\_status) | n/a |
 <!-- END_TF_DOCS -->
+
+## Note
+
+The "main" branch stores the releases for EKS, and the "last-kops-release-do-not-delete" serves as a kops cluster features branch, which was used for "live-1" cluster.
