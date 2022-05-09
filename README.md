@@ -1,6 +1,6 @@
 # cloud-platform-terraform-opa
 
-Terraform module that deploys cloud-platform's open policy agent. It includes all required policies and kubernetes resources in order to get up and running open policy agent in any kops/eks cluster
+Terraform module that deploys cloud-platform's open policy agent. It includes all required policies and kubernetes resources in order to get up and running open policy agent in any eks cluster
 
 ## Usage
 

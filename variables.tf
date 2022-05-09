@@ -9,8 +9,8 @@ variable "enable_invalid_hostname_policy" {
 }
 
 variable "cluster_color" {
-  description = "Cluster color (blue/green). This variable is effective only when enable_external_dns_weight is set"
-  default     = "blue"
+  description = "Cluster color. This variable is effective only when enable_external_dns_weight is set"
+  default     = "green"
   type        = string
 }
 
