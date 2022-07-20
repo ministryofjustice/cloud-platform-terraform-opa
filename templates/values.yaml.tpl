@@ -32,13 +32,12 @@ admissionController:
       resources: ["pods"]
     - operations: ["CREATE", "UPDATE"]
       apiGroups: ["apps"]
+      apiVersions: ["v1"]
       resources: ["deployments","replicasets", "statefulsets"]
     - operations: ["CREATE", "UPDATE"]
       apiGroups: ["policy"]
+      apiVersions: ["v1"]
       resources: ["poddisruptionbudgets"]
-    - operations: ["CREATE", "UPDATE"]
-      apiGroups: [""]
-      resources: ["replicationcontrollers"]
 
 generateCerts: true
 
