@@ -30,6 +30,15 @@ admissionController:
       apiGroups: [""]
       apiVersions: ["v1"]
       resources: ["pods"]
+    - operations: ["CREATE", "UPDATE"]
+      apiGroups: ["apps"]
+      resources: ["deployments","replicasets", "statefulsets"]
+    - operations: ["CREATE", "UPDATE"]
+      apiGroups: ["policy"]
+      resources: ["poddisruptionbudgets"]
+    - operations: ["CREATE", "UPDATE"]
+      apiGroups: [""]
+      resources: ["replicationcontrollers"]
 
 generateCerts: true
 
