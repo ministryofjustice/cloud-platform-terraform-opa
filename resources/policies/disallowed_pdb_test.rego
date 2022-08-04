@@ -87,7 +87,7 @@ deployment(replicas) = output {
 }
 
 kubernetes(obj) = output {
-  output := {"namespace": {namespace: {obj.apiVersion: {obj.kind: [obj]}}}}
+  output := {"namespaces": {namespace: {obj.apiVersion: {obj.kind: [obj]}}}}
 }
 
 inv_pdb_min_available(min_available) = output {

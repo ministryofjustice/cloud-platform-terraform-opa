@@ -20,7 +20,6 @@ deny[msg] {
   )
 }
 
-
 deny[msg] {
   obj := input.request.object
   pdb := data.kubernetes.namespaces[obj.metadata.namespace]["policy/v1"].PodDisruptionBudget[_]
