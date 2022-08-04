@@ -23,7 +23,7 @@ deny[msg] {
 
 deny[msg] {
   obj := input.request.object
-  pdb := data.inventory.namespace[obj.metadata.namespace]["policy/v1"].PodDisruptionBudget[_]
+  pdb := data.kubernetes.namespaces[obj.metadata.namespace]["policy/v1"].PodDisruptionBudget[_]
   obj.spec.selector.matchLabels == pdb.spec.selector.matchLabels
   max_unavailable := pdb.spec.maxUnavailable
   result := max_unavailable > 0
@@ -36,7 +36,7 @@ deny[msg] {
 
 deny[msg] {
   obj := input.request.object
-  pdb := data.inventory.namespace[obj.metadata.namespace]["policy/v1"].PodDisruptionBudget[_]
+  pdb := data.kubernetes.namespaces[obj.metadata.namespace]["policy/v1"].PodDisruptionBudget[_]
   obj.spec.selector.matchLabels == pdb.spec.selector.matchLabels
   min_available := pdb.spec.minAvailable
   result := obj.spec.replicas > min_available
