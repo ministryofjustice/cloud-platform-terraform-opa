@@ -1,12 +1,10 @@
 package cloud_platform.admission
 
-# This policy Disallow the following scenarios when deploying PodDisruptionBudgets or resources 
-# that implement the replica subresource (e.g. Deployment, ReplicationController, ReplicaSet, StatefulSet):
+# This policy Disallow the following scenarios when deploying PodDisruptionBudgets:
 #     1. PodDisruptionBudgets with .spec.maxUnavailable or .spec.minAvailable is not a %
 #     2. PodDisruptionBudgets with .spec.minAvailable or .spec.maxUnavailable is within the limits mentioned
 # This will prevent PodDistruptionBudgets to have disruptionAllowed = 0 and thereby prevent from blocking 
 # voluntary disruptions such as node draining.
-# This policy 
 
 operations = {"CREATE", "UPDATE"}
 
