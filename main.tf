@@ -55,7 +55,7 @@ resource "kubernetes_config_map" "policies_opa" {
   }
 
   lifecycle {
-    ignore_changes = [metadata.0.annotations]
+    ignore_changes = [metadata[0].annotations]
   }
 }
 
@@ -81,7 +81,7 @@ resource "kubernetes_config_map" "external_dns_policies" {
   }
 
   lifecycle {
-    ignore_changes = [metadata.0.annotations]
+    ignore_changes = [metadata[0].annotations]
   }
 }
 
@@ -105,6 +105,6 @@ resource "kubernetes_config_map" "valid_host" {
   }
 
   lifecycle {
-    ignore_changes = [metadata.0.annotations]
+    ignore_changes = [metadata[0].annotations]
   }
 }
