@@ -32,7 +32,6 @@ resource "kubernetes_config_map" "policies_opa" {
     policy-ingress-clash                         = "ingress_clash",
     policy-pod-toleration-withkey                = "pod_toleration_withkey",
     policy-pod-toleration-withnullkey            = "pod_toleration_withnullkey",
-    policy-ingress-nginx-class-modsec            = "ingress_modsec_nginx_class",
     policy-ingress-no-nginx-class-modsec         = "ingress_modsec_no_nginx_class",
     policy-ingress-nginx-class-modsec-snippet    = "ingress_modsec_snippet_nginx_class",
     policy-ingress-no-nginx-class-modsec-snippet = "ingress_modsec_snippet_no_nginx_class",
