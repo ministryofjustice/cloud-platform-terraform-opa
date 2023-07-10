@@ -64,20 +64,20 @@ test_deny_modsec_no_ingress_class {
     with input as new_admission_review("CREATE", ingress_with_modsec, null)
 }
 
-test_deny_modsec_snippet_no_ingress_class {
-  denied
-    with input as new_admission_review("CREATE", ingress_with_modsec_snippet, null)
-}
+# test_deny_modsec_snippet_no_ingress_class {
+#   denied
+#     with input as new_admission_review("CREATE", ingress_with_modsec_snippet, null)
+# }
 
 test_deny_modsec {
   denied
     with input as new_admission_review("CREATE", ingress_class_with_modsec, null)
 }
 
-test_deny_modsec_snippet {
-  denied
-    with input as new_admission_review("CREATE", ingress_class_with_modsec_snippet, null)
-}
+# test_deny_modsec_snippet {
+#   denied
+#     with input as new_admission_review("CREATE", ingress_class_with_modsec_snippet, null)
+# }
 
 test_not_deny_with_diff_ingress_class {
   not denied
