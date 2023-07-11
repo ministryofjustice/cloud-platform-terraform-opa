@@ -28,7 +28,6 @@ resource "kubernetes_config_map" "policies_opa" {
   for_each = {
     policy-default                    = "main",
     policy-cloud-platform-admission   = "cloud_platform_admission",
-    policy-ingress-clash              = "ingress_clash",
     policy-pod-toleration-withkey     = "pod_toleration_withkey",
     policy-pod-toleration-withnullkey = "pod_toleration_withnullkey",
     policy-ingress-hostname-length    = "ingress_hostname_length",
