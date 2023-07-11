@@ -26,10 +26,7 @@ resource "null_resource" "kube_system_ns_label" {
 
 resource "kubernetes_config_map" "policies_opa" {
   for_each = {
-    policy-default                    = "main",
-    policy-cloud-platform-admission   = "cloud_platform_admission",
-    policy-pod-toleration-withkey     = "pod_toleration_withkey",
-    policy-pod-toleration-withnullkey = "pod_toleration_withnullkey",
+    policy-default = "main",
   }
 
   metadata {
@@ -49,30 +46,3 @@ resource "kubernetes_config_map" "policies_opa" {
     ignore_changes = [metadata[0].annotations]
   }
 }
-
-resource "kubernetes_config_map" "external_dns_policies" {
-  for_each = var.enable_external_dns_weight ? {
-    external-dns-weight            = "ingress_external_dns_no_weight",
-    external-dns-identifier-format = "ingress_external_dns_identifier_format",
-  } : {}
-
-  metadata {
-    name      = each.key
-    namespace = kubernetes_namespace.opa.id
-
-    labels = {
-      "openpolicyagent.org/policy" = "rego"
-    }
-  }
-
-  data = {
-    main = templatefile("${path.module}/resources/policies/external-dns-annotation/${each.value}.rego", {
-      cluster_color = var.cluster_color
-    })
-  }
-
-  lifecycle {
-    ignore_changes = [metadata[0].annotations]
-  }
-}
-
