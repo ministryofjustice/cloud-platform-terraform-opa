@@ -30,7 +30,6 @@ resource "kubernetes_config_map" "policies_opa" {
     policy-cloud-platform-admission   = "cloud_platform_admission",
     policy-pod-toleration-withkey     = "pod_toleration_withkey",
     policy-pod-toleration-withnullkey = "pod_toleration_withnullkey",
-    policy-ingress-hostname-length    = "ingress_hostname_length",
   }
 
   metadata {
