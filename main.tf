@@ -1,4 +1,3 @@
-
 resource "helm_release" "open_policy_agent" {
   name       = "opa"
   namespace  = kubernetes_namespace.opa.id
@@ -27,15 +26,12 @@ resource "null_resource" "kube_system_ns_label" {
 
 resource "kubernetes_config_map" "policies_opa" {
   for_each = {
-    policy-default                               = "main",
-    policy-cloud-platform-admission              = "cloud_platform_admission",
-    policy-ingress-clash                         = "ingress_clash",
-    policy-pod-toleration-withkey                = "pod_toleration_withkey",
-    policy-pod-toleration-withnullkey            = "pod_toleration_withnullkey",
-    policy-ingress-nginx-class-modsec            = "ingress_modsec_nginx_class",
-    policy-ingress-no-nginx-class-modsec         = "ingress_modsec_no_nginx_class",
-    policy-ingress-no-nginx-class-modsec-snippet = "ingress_modsec_snippet_no_nginx_class",
-    policy-ingress-hostname-length               = "ingress_hostname_length",
+    policy-default                    = "main",
+    policy-cloud-platform-admission   = "cloud_platform_admission",
+    policy-ingress-clash              = "ingress_clash",
+    policy-pod-toleration-withkey     = "pod_toleration_withkey",
+    policy-pod-toleration-withnullkey = "pod_toleration_withnullkey",
+    policy-ingress-hostname-length    = "ingress_hostname_length",
   }
 
   metadata {
@@ -82,26 +78,3 @@ resource "kubernetes_config_map" "external_dns_policies" {
   }
 }
 
-# Policy for test clusters, to use only cluster domain and integration test domain as valid host names
-
-resource "kubernetes_config_map" "valid_host" {
-  count = var.enable_invalid_hostname_policy ? 1 : 0
-
-  metadata {
-    name      = "valid-host"
-    namespace = kubernetes_namespace.opa.id
-    labels = {
-      "openpolicyagent.org/policy" = "rego"
-    }
-  }
-
-  data = {
-    main = templatefile("${path.module}/resources/policies-test-cluster/valid_hostname.rego", {
-      valid_domain_names = "*.${var.cluster_domain_name},*.${var.integration_test_zone}"
-    })
-  }
-
-  lifecycle {
-    ignore_changes = [metadata[0].annotations]
-  }
-}

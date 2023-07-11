@@ -101,7 +101,6 @@ resource "helm_release" "cert_manager" {
 }
 
 module "opa" {
-  source              = "../.."
-  depends_on          = [helm_release.cert_manager]
-  cluster_domain_name = "opa.cloud-platform.service.justice.gov.uk"
+  source     = "../.."
+  depends_on = [helm_release.cert_manager]
 }
